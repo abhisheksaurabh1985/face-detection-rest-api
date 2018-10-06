@@ -1,0 +1,10 @@
+__pycache__/
+
+# Sample images 
+*.jpg
+
+# Exclude the models inside this directory. But commit so as to maintain the structure. 
+model/*
+# exception to the rule
+!model/.gitkeep 
+
