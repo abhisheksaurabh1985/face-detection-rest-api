@@ -125,13 +125,15 @@ RUN pip3 install gunicorn
 
 # make directories suited to your application
 RUN mkdir -p /home/project/face_detection_REST_API
-RUN mkdir -p /home/project/face_detection_REST_API/model
+# RUN mkdir -p /home/project/face_detection_REST_API/model
 WORKDIR /home/project/face_detection_REST_API
 
 # copy and install packages for flask
-COPY requirements.txt /home/project/face_detection_REST_API
-RUN pip3 install --no-cache-dir -r requirements.txt
+# ADD requirements.txt /home/project/face_detection_REST_API
+# RUN pip3 install --no-cache-dir -r requirements.txt
 
 # copy contents from your local to your docker container
-COPY . /home/project/face_detection_REST_API
-ADD ./model /home/project/face_detection_REST_API/model/
+# COPY . /home/project/face_detection_REST_API
+# ADD ./model /home/project/face_detection_REST_API/
+COPY . .
+# RUN pip3 install --no-cache-dir -r requirements.txt

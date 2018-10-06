@@ -8,7 +8,7 @@ services:
     build: ./api
     ports:
       - "8000:8000"
-    command: gunicorn -w 1 -b :8000 run_fd_server:run_fd_server
+    command: gunicorn -w 1 -b :8000 wsgi:app
 
   nginx:
     container_name: nginx

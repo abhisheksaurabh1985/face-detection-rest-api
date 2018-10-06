@@ -16,4 +16,15 @@ Suitable for single threaded use with no concurrent requests.
 
 ##### Errors and solutions
 1. __docker-compose up doesn't rebuild image although Dockerfile has changed__
-`docker-compose up --build`. `docker-compose up --force-recreate` didn't work. 
+`docker-compose up --build`. `docker-compose up --force-recreate` didn't work.
+
+2. The folllwing command seems to work but doesn't give
+```bash
+curl -X GET -i 'http://0.0.0.0:8000/'
+
+curl -X POST -i 'http://0.0.0.0:8000/predict' --data 'image=@/home/abhishek/Desktop/Workspace/practice/face_detection/iron_chic.jpg'
+
+curl -X POST -i 'http://0.0.0.0:8000/predict' -F 'image=@/home/abhishek/Desktop/Workspace/practice/face_detection/iron_chic.jpg'
+
+curl -X POST -i http://0.0.0.0:8000/predict -F 'image=@/home/abhishek/Desktop/Workspace/practice/face_detection/iron_chic.jpg'
+```

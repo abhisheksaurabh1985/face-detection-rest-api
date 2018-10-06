@@ -12,7 +12,7 @@ import settings
 
 # Initialize the flask application and the face detection model
 app = flask.Flask(__name__)
-model = None
+# model = None
 
 def load_model():
     global model
@@ -32,12 +32,16 @@ def detect_face(model, image, min_confidence=0.5, img_width=300, img_height=300)
 	bbox_coords = []
 
 	(h, w) = image.shape[:2]
+	print("h: ", h)
 	blob = cv2.dnn.blobFromImage(cv2.resize(image, (img_width, img_height)), 1.0,
 		(img_width, img_height), (104.0, 177.0, 123.0))
+	print("blob: ", blob)
+	print("type(blob): ", type(blob))
 
 	# pass the blob through the network and obtain the detections and
 	# predictions
 	print("[INFO] computing object detections...")
+	print("type(model): ", type(model))
 	model.setInput(blob)
 	detections = model.forward()
 
@@ -70,19 +74,24 @@ def detect_face(model, image, min_confidence=0.5, img_width=300, img_height=300)
 	return image, confidence_score, bbox_coords
 
 
+@app.route("/")
+def homepage():
+	return "Welcome to the Face Detection REST API!"
+
+
 @app.route("/predict", methods=["POST"])
 def predict():
 
 	data = {"success": False}
+	print("flask.request.method: ", flask.request.method)
 	# Ensure that the image was properly uploaded to the end point
 	if flask.request.method == "POST":
 		if flask.request.files.get("image"):
 			# Read the image in PIL format. This will be changed in the OpenCV format later.
 			image = flask.request.files["image"].read()
 			image = Image.open(io.BytesIO(image))
-
 			image = get_image_in_opencv_format(image)
-
+			print("Image converted into OpenCV format")
 			face_detected_image, confidence_score, bbox_coords = detect_face(model,
 			                                                                 image,
 			                                                                 min_confidence=settings.MIN_CONFIDENCE,
@@ -90,6 +99,7 @@ def predict():
 			                                                                 img_height=settings.IMAGE_HEIGHT)
 			data["predictions"] = {"confidence_score": confidence_score, "bbox_coords": bbox_coords}
 			data["success"] = True
+			print("***********  data ***********: \n", data)
 
 	# Return the data dictionary as JSON object
 	return flask.jsonify(data)
