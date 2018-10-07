@@ -12,13 +12,19 @@ import settings
 
 # Initialize the flask application and the face detection model
 app = flask.Flask(__name__)
-# model = None
+model = None
+# PATH_CAFFE_PROTOTXT_FILE = "../model/deploy.prototxt.txt"
+# PATH_CAFFE_PRETRAINED_MODEL = "../model/res10_300x300_ssd_iter_140000.caffemodel"
+# model = cv2.dnn.readNetFromCaffe(PATH_CAFFE_PROTOTXT_FILE,
+# 								 PATH_CAFFE_PRETRAINED_MODEL)
+
 
 def load_model():
     global model
-    print("[INFO] loading model...")
-    model = cv2.dnn.readNetFromCaffe(settings.PATH_CAFFE_PROTOTXT_FILE,
-                                     settings.PATH_CAFFE_PRETRAINED_MODEL)
+    print("[INFO] Start loading model.")
+    model = cv2.dnn.readNetFromCaffe("../model/deploy.prototxt.txt",
+                                     "../model/res10_300x300_ssd_iter_140000.caffemodel")
+    print("[INFO] Model loaded.")
 
 
 def get_image_in_opencv_format(image):
@@ -54,7 +60,6 @@ def detect_face(model, image, min_confidence=0.5, img_width=300, img_height=300)
 		# filter out weak detections by ensuring the `confidence` is
 		# greater than the minimum confidence
 		if confidence > min_confidence:
-
 			confidence_score.append(round(float(confidence), 3))
 			# compute the (x, y)-coordinates of the bounding box for the
 			# object
@@ -81,7 +86,6 @@ def homepage():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-
 	data = {"success": False}
 	print("flask.request.method: ", flask.request.method)
 	# Ensure that the image was properly uploaded to the end point
@@ -100,7 +104,6 @@ def predict():
 			data["predictions"] = {"confidence_score": confidence_score, "bbox_coords": bbox_coords}
 			data["success"] = True
 			print("***********  data ***********: \n", data)
-
 	# Return the data dictionary as JSON object
 	return flask.jsonify(data)
 

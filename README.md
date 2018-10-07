@@ -18,7 +18,7 @@ Suitable for single threaded use with no concurrent requests.
 1. __docker-compose up doesn't rebuild image although Dockerfile has changed__
 `docker-compose up --build`. `docker-compose up --force-recreate` didn't work.
 
-2. The folllwing command seems to work but doesn't give
+2. GET request works but the POST throws an error. Model is not loading.  
 ```bash
 curl -X GET -i 'http://0.0.0.0:8000/'
 
