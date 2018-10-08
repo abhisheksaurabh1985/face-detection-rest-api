@@ -1,4 +1,4 @@
-## Flask Rest API for Face Detection in Production Using Docker, NGINX and Gunicorn
+### Flask Rest API for Face Detection in Production Using Docker, NGINX and Gunicorn
 
 #### Steps to run
 1. Open a terminal and run `docker-compose up --build`. Wait until the following output shows up on the terminal.
@@ -39,3 +39,8 @@ Content-Length: 138
 {"predictions":{"bbox_coords":[[256,51,431,278],[134,133,266,327],[11,146,145,347]],"confidence_score":[1.0,0.998,0.607]},"success":true}
 ```
 Output contains the confidence score for each face detection. The bounding box coordinates are the coordinates of the corresponding faces. Length of any of these lists equals the number of face detected.
+
+
+#### TODO
+1. Handling of incoming requests in a batch using `Redis`
+2. Stress test the API
