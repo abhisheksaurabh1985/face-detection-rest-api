@@ -3,7 +3,7 @@ import requests
 
 # initialize the Keras REST API endpoint URL along with the input
 # image path
-FACE_DETECTION_REST_API_URL = "http://localhost:5000/predict"
+FACE_DETECTION_REST_API_URL = "http://0.0.0.0:8000/predict"
 IMAGE_PATH = "../iron_chic.jpg"
 
 # load the input image and construct the payload for the request

@@ -1,38 +1,41 @@
-##### Consuming the Face Detection API
-  1. Through `curl`
-```python
-curl -X POST -F image=@../rooster.jpg 'http://localhost:5000/predict'
-curl -X POST -F image=@../iron_chic.jpg 'http://localhost:5000/predict'
+## Flask Rest API for Face Detection in Production Using Docker, NGINX and Gunicorn
+
+#### Steps to run
+1. Open a terminal and run `docker-compose up --build`. Wait until the following output shows up on the terminal.
 ```
-  2. The script `demo_request.py` handles the request and response to and from the API. It makes use of the `request` package in Python. To run this script, first ensure that the Flask web server is running (i.e. run `run_fd_server.py`). Then in a separate shell run `demo_request.py`.
-
-
-##### Current status
-Suitable for single threaded use with no concurrent requests.
-
-##### TODO
-1. Use `Redis` to handle multiple requests
-
-
-##### Errors and solutions
-1. __docker-compose up doesn't rebuild image although Dockerfile has changed__
-`docker-compose up --build`. `docker-compose up --force-recreate` didn't work.
-
-2. GET request works but the POST throws an error. Model is not loading.  
-```bash
-curl -X GET -i 'http://0.0.0.0:8000/'
-
-curl -X POST -i 'http://0.0.0.0:8000/predict' --data 'image=@/home/abhishek/Desktop/Workspace/practice/face_detection/iron_chic.jpg'
-
-curl -X POST -i 'http://0.0.0.0:8000/predict' -F 'image=@/home/abhishek/Desktop/Workspace/practice/face_detection/iron_chic.jpg'
-
+Attaching to api, nginx
+api      | [2018-10-08 17:31:36 +0000] [1] [INFO] Starting gunicorn 19.9.0
+api      | [2018-10-08 17:31:36 +0000] [1] [INFO] Listening at: http://0.0.0.0:8000 (1)
+api      | [2018-10-08 17:31:36 +0000] [1] [INFO] Using worker: sync
+api      | [2018-10-08 17:31:36 +0000] [9] [INFO] Booting worker with pid: 9
+```
+2. Using __curl__: In another terminal, run the following command:
+```
 curl -X POST -i http://0.0.0.0:8000/predict -F 'image=@/home/abhishek/Desktop/Workspace/practice/face_detection/iron_chic.jpg'
 ```
 
-```bash
-abhishek@abhishek-HP-EliteBook-840-G3:~/Desktop/Workspace/practice/face_detection/face_detection_rest_API$ docker-compose ps
-Name               Command               State                Ports               
----------------------------------------------------------------------------------
-api     gunicorn -w 1 -b :8000 wsg ...   Up      6006/tcp, 0.0.0.0:8000->8000/tcp
-nginx   nginx -g daemon off;             Up      80/tcp, 0.0.0.0:8001->8001/tcp
+Following output will show up:
+
 ```
+HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+Server: gunicorn/19.9.0
+Date: Mon, 08 Oct 2018 17:34:18 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 138
+
+{"predictions":{"bbox_coords":[[256,51,431,278],[134,133,266,327],[11,146,145,347]],"confidence_score":[1.0,0.998,0.607]},"success":true}
+```
+3.Using python `request` module: `cd` into `api` and run `python demo_request.py`. Following shall be the output:
+```
+('Face bounding box coordinates and the corresponding confidence scores: \n', {u'bbox_coords': [[256, 51, 431, 278], [134, 133, 266, 327], [11, 146, 145, 347]], u'confidence_score': [1.0, 0.998, 0.607]})
+
+```
+
+#### Output description
+```
+{"predictions":{"bbox_coords":[[256,51,431,278],[134,133,266,327],[11,146,145,347]],"confidence_score":[1.0,0.998,0.607]},"success":true}
+```
+Output contains the confidence score for each face detection. The bounding box coordinates are the coordinates of the corresponding faces. Length of any of these lists equals the number of face detected.
