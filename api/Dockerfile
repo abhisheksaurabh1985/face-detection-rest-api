@@ -134,6 +134,7 @@ WORKDIR /home/project/face_detection_REST_API
 
 # copy contents from your local to your docker container
 COPY . /home/project/face_detection_REST_API
+# COPY . /home/project/face_detection_REST_API
 # ADD ./model /home/project/face_detection_REST_API/
 # COPY . .
 # RUN pip3 install --no-cache-dir -r requirements.txt

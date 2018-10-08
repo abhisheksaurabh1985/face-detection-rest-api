@@ -28,3 +28,11 @@ curl -X POST -i 'http://0.0.0.0:8000/predict' -F 'image=@/home/abhishek/Desktop/
 
 curl -X POST -i http://0.0.0.0:8000/predict -F 'image=@/home/abhishek/Desktop/Workspace/practice/face_detection/iron_chic.jpg'
 ```
+
+```bash
+abhishek@abhishek-HP-EliteBook-840-G3:~/Desktop/Workspace/practice/face_detection/face_detection_rest_API$ docker-compose ps
+Name               Command               State                Ports               
+---------------------------------------------------------------------------------
+api     gunicorn -w 1 -b :8000 wsg ...   Up      6006/tcp, 0.0.0.0:8000->8000/tcp
+nginx   nginx -g daemon off;             Up      80/tcp, 0.0.0.0:8001->8001/tcp
+```

@@ -13,27 +13,36 @@ import settings
 # Initialize the flask application and the face detection model
 app = flask.Flask(__name__)
 model = None
-# PATH_CAFFE_PROTOTXT_FILE = "../model/deploy.prototxt.txt"
-# PATH_CAFFE_PRETRAINED_MODEL = "../model/res10_300x300_ssd_iter_140000.caffemodel"
-# model = cv2.dnn.readNetFromCaffe(PATH_CAFFE_PROTOTXT_FILE,
-# 								 PATH_CAFFE_PRETRAINED_MODEL)
-
-
-def load_model():
-    global model
-    print("[INFO] Start loading model.")
-    model = cv2.dnn.readNetFromCaffe("../model/deploy.prototxt.txt",
-                                     "../model/res10_300x300_ssd_iter_140000.caffemodel")
-    print("[INFO] Model loaded.")
-
+print("Model before loading: ", type(model))
+model = cv2.dnn.readNetFromCaffe("./model/deploy.prototxt.txt",
+                                 "./model/res10_300x300_ssd_iter_140000.caffemodel")
+print("Model after loading: ", type(model))
 
 def get_image_in_opencv_format(image):
+	"""
+	Converts image from PIL to OpenCV format.
+	"""
 	open_cv_image = np.array(image)
 	open_cv_image = open_cv_image[:, :, ::-1].copy()
 	return open_cv_image
 
 
 def detect_face(model, image, min_confidence=0.5, img_width=300, img_height=300):
+	"""
+	Returns the image with a bounding box around each face and a confidence score
+	for the face detected. Works with multiple faces.
+
+	: param net: Model which is to be used for face detection.
+	: param image: Image in which face is to be detected.
+	: min_confidence: Minimum confidence for the model to identify a region as a
+	face. Default is 0.5.
+
+	: return confidence_score: List with the confidence score for each face detected.
+	E.g. confidence:  [0.9997495, 0.9973845, 0.8715456]
+	: return bbox_coords: List with the coordinates of top left and bottom right corner of
+	the bounding box for all the faces. Coordinates of each face is in a tuple.
+	E.g. box:  [[262, 58, 434, 273], [136, 126, 261, 323], [7, 149, 141, 350]]
+	"""
 	confidence_score = []
 	bbox_coords = []
 
@@ -112,4 +121,5 @@ if __name__ == "__main__":
 	print("[INFO] Loading CNN Face Detection Model and starting the Flask server. \n")
 	print("Please wait until the server has fully started.")
 	load_model()
+	# app.debug = True
 	app.run(host='0.0.0.0')
