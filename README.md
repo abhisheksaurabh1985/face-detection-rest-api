@@ -44,7 +44,9 @@ Content-Length: 138
 ```
 {"predictions":{"bbox_coords":[[256,51,431,278],[134,133,266,327],[11,146,145,347]],"confidence_score":[1.0,0.998,0.607]},"success":true}
 ```
-Output contains the confidence score for each face detection. The bounding box coordinates are the coordinates of the corresponding faces. Length of any of these lists equals the number of face detected.
+- Output contains the confidence score for each face detection.
+- The bounding box coordinates are the coordinates of the corresponding faces. The coordinates are in the following order: `(top_left_x_coordinate, top_left_y_coordinate, bottom_right_x_coordinate, bottom_right_y_coordinate).`
+- Length of any of these lists equals the number of face detected.
 
 
 #### TODO
