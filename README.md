@@ -1,5 +1,8 @@
 ### Flask Rest API for Face Detection in Production Using Docker, NGINX and Gunicorn
 
+See the accompanying blog post for full details:
+[Face Detection Rest API in Production using Docker, NGINX and Flask](https://medium.com/p/1f205633d2d6/edit)
+
 The goal of this project is to explain how can we deploy a scalable deep learning model in production using Docker and NGINX. Focus is _NOT_ on the model itself.
 
 That said, the face detection model from `OpenCV` used here performs reasonably well. It performs well even when the face is occluded but usually fails when the face is not well illuminated. More specifically, I've used the face detection model in the `dnn` module of `OpenCV`. A bit of detail on the model can be found on [this](https://www.pyimagesearch.com/2018/02/26/face-detection-with-opencv-and-deep-learning/) PyImageSearch blog. The model itself consists of two files which are as follows:
