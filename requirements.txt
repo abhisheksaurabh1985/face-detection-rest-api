@@ -59,7 +59,7 @@ protobuf==3.6.0
 ptyprocess==0.5.2
 pycocotools==2.0
 pydot-ng==1.0.0
-Pygments==2.2.0
+Pygments==2.7.4
 pyparsing==2.2.0
 python-dateutil==2.7.3
 python-gflags==3.1.2
